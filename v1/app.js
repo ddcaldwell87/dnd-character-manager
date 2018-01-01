@@ -1,4 +1,11 @@
-var mongoose = require("mongoose");
+var mongoose = require("mongoose"),
+    express = require("express"),
+    app = express(),
+    bodyParser = require("body-parser");
+    
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({extended: true}));
 
 mongoose.connect("mongodb://localhost/dnd-character-manager");
 
