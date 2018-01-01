@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/ddcaldwell87/dnd-character-manager/issues"
   },
-  "homepage": "https://github.com/ddcaldwell87/dnd-character-manager#readme"
+  "homepage": "https://github.com/ddcaldwell87/dnd-character-manager#readme",
+  "dependencies": {
+    "mongoose": "^5.0.0-rc0"
+  }
 }
