@@ -1,0 +1,19 @@
+{
+  "name": "dnd-character-manager",
+  "version": "1.0.0",
+  "description": "A web app that lets users keep track of their D&D characters",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddcaldwell87/dnd-character-manager.git"
+  },
+  "author": "David Caldwell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ddcaldwell87/dnd-character-manager/issues"
+  },
+  "homepage": "https://github.com/ddcaldwell87/dnd-character-manager#readme"
+}
