@@ -5,7 +5,7 @@ var mongoose = require("mongoose"),
     bodyParser = require("body-parser");
     
 app.set("view engine", "ejs");
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: true}));
 
 // CONNECT TO MONGODB
@@ -48,13 +48,18 @@ var newCharacter = new Character({
     profession: "Wizard"
 });
 
+var newJournal = new Journal({
+    title: "This Is Another Title",
+    content: "blah blah blah blah blah"
+});
+// newJournal.save();
+
 // RESTFUL ROUTES
 app.get("/", function(req, res){
     res.send("Root route. Sign in or register page");
     // If signed in, redirect to character select page
 });
 
-// Show route
 // Index route for users characters or sign in/register page
 app.get("/:user", function(req, res){
     // res.send("Character select page");
@@ -102,9 +107,14 @@ app.post("/:user/:character/inventory", function(req, res){
 
 // Index route for journal entries for specific character
 app.get("/:user/:character/journal", function(req, res){
-    res.send("Journal page");
-    // res.render("journal", {journal: journal});
-    // Shows specific characters journal
+    // Shows specific characters journals
+    Journal.find({}, function(err, journals){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("journal", {journals: journals});
+        }
+    });
 });
 
 // Show route for a specific journal entry for specific character
