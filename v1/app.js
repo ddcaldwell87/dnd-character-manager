@@ -68,7 +68,11 @@ app.get("/", function(req, res){
 //     // Shows a list of users characters
 // });
 
+// ================
+// CHARACTER ROUTES
+// ================
 
+// INDEX - shows all characters
 app.get("/characters", function(req, res){
     Character.find({}, function(err, characters){
         if(err){
@@ -79,6 +83,7 @@ app.get("/characters", function(req, res){
     });
 });
 
+// CREATE - saves new character to database
 app.post("/characters", function(req, res){
     Character.create(req.body.character, function(err, newCharacter){
         if(err){
@@ -89,10 +94,12 @@ app.post("/characters", function(req, res){
     });
 });
 
+// NEW - render form to create new character
 app.get("/characters/new", function(req, res){
     res.render("new");
 });
 
+// SHOW - shows a specific character page
 app.get("/characters/:id", function(req, res){
     Character.findById(req.params.id, function(err, foundCharacter){
         if(err){
@@ -103,14 +110,26 @@ app.get("/characters/:id", function(req, res){
     });
 });
 
-// New route for new character
-app.get("/:user/:character/new", function(req, res){
-    res.send("New character form");
+// EDIT - render form to edit specific character
+app.get("/characters/:id/edit", function(req, res){
+    Character.findById(req.params.id, function(err, foundCharacter){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("edit", {character: foundCharacter});
+        }
+    });
 });
 
-// Create route for new character
-app.post("/:user/:character", function(req, res){
-    res.send("You hit the character post route");
+// UPDATE - update logic for edit form
+app.put("/character/:id", function(req, res){
+    Character.findByIdAndUpdate(req.params.id, req.body.character, function(err, updatedCharacter){
+        if(err){
+            console.log(err);
+        } else {
+            res.redirect("/character/" + req.params.id);
+        }
+    });
 });
 
 // Index route for inventory of specific character
