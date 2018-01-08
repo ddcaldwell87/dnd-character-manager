@@ -2,11 +2,15 @@
 var mongoose = require("mongoose"),
     express = require("express"),
     app = express(),
+    expressSanitizer = require("express-sanitizer"),
+    methodOverride = require("method-override"),
     bodyParser = require("body-parser");
     
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(expressSanitizer());
+app.use(methodOverride("_method"));
 
 // CONNECT TO MONGODB
 mongoose.connect("mongodb://localhost/dnd-character-manager");
@@ -122,12 +126,12 @@ app.get("/characters/:id/edit", function(req, res){
 });
 
 // UPDATE - update logic for edit form
-app.put("/character/:id", function(req, res){
+app.put("/characters/:id", function(req, res){
     Character.findByIdAndUpdate(req.params.id, req.body.character, function(err, updatedCharacter){
         if(err){
             console.log(err);
         } else {
-            res.redirect("/character/" + req.params.id);
+            res.redirect("/characters/" + req.params.id);
         }
     });
 });
