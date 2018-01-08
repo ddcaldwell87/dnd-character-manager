@@ -47,6 +47,7 @@ var newCharacter = new Character({
     gender: "Male",
     profession: "Wizard"
 });
+// newCharacter.save();
 
 var newJournal = new Journal({
     title: "This Is Another Title",
@@ -60,17 +61,46 @@ app.get("/", function(req, res){
     // If signed in, redirect to character select page
 });
 
-// Index route for users characters or sign in/register page
-app.get("/:user", function(req, res){
-    // res.send("Character select page");
-    res.render("user");
-    // Shows a list of users characters
+// // Index route for users characters or sign in/register page
+// app.get("/:user", function(req, res){
+//     // res.send("Character select page");
+//     res.render("user");
+//     // Shows a list of users characters
+// });
+
+
+app.get("/characters", function(req, res){
+    Character.find({}, function(err, characters){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("character", {characters: characters});
+        }
+    });
 });
 
-// Show route for specific character
-app.get("/:user/:character", function(req, res){
-    res.send("Character sheet page");
-    // Shows specific characters character sheet
+app.post("/characters", function(req, res){
+    Character.create(req.body.character, function(err, newCharacter){
+        if(err){
+            console.log(err);
+        } else {
+            res.redirect("/characters");
+        }
+    });
+});
+
+app.get("/characters/new", function(req, res){
+    res.render("new");
+});
+
+app.get("/characters/:id", function(req, res){
+    Character.findById(req.params.id, function(err, foundCharacter){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("show", {character: foundCharacter});
+        }
+    });
 });
 
 // New route for new character
@@ -117,6 +147,11 @@ app.get("/:user/:character/journal", function(req, res){
     });
 });
 
+// New route for a journal entry for specific character
+app.get("/:user/:character/journal/new", function(req, res){
+    res.render("newJournal");
+});
+
 // Show route for a specific journal entry for specific character
 app.get("/:user/:character/journal/:id", function(req, res){
     res.send("Journal page");
@@ -124,14 +159,18 @@ app.get("/:user/:character/journal/:id", function(req, res){
     // Shows specific characters journal
 });
 
-// New route for a journal entry for specific character
-app.get("/:user/:character/journal/new", function(req, res){
-    res.send("New journal entry form");
-});
-
 // Create route for a journal entry for specific character
 app.post("/:user/:character/journal", function(req, res){
-        res.send("You hit the journal post route");
+    // TODO: add associations
+    Journal.create(req.body.journal, function(err, journal){
+        if(err){
+            console.log(err);
+        } else {
+            user.journals.push(journal);
+            journal.save();
+            res.redirect("/:user/:character/journal/:id");
+        }
+    });
 });
 
 // START SERVER

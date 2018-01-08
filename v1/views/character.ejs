@@ -1,0 +1,7 @@
+<h1>Character</h1>
+
+<% characters.forEach(function(character){ %>
+    <div>
+        <h3><a href="/characters/<%= character._id %>"><%= character.name %></a></h3>
+    </div>
+<% }); %>
