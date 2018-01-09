@@ -136,6 +136,21 @@ app.put("/characters/:id", function(req, res){
     });
 });
 
+// DELETE - delete a character
+app.delete("/characters/:id", function(req, res){
+    Character.findByIdAndRemove(req.params.id, function(err){
+        if(err){
+            console.log(err);
+        } else {
+            res.redirect("/characters");
+        }
+    });
+});
+
+// ================
+// INVENTORY ROUTES
+// ================
+
 // Index route for inventory of specific character
 app.get("/:user/:character/inventory", function(req, res){
     res.send("Inventory page");
@@ -157,6 +172,10 @@ app.get("/:user/:character/inventory/new", function(req, res){
 app.post("/:user/:character/inventory", function(req, res){
         res.send("You hit the inventory post route");
 });
+
+// ==============
+// JOURNAL ROUTES
+// ==============
 
 // Index route for journal entries for specific character
 app.get("/:user/:character/journal", function(req, res){
@@ -189,7 +208,7 @@ app.post("/:user/:character/journal", function(req, res){
         if(err){
             console.log(err);
         } else {
-            user.journals.push(journal);
+            character.journals.push(journal);
             journal.save();
             res.redirect("/:user/:character/journal/:id");
         }
