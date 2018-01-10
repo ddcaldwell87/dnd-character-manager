@@ -5,6 +5,7 @@
 <p><%= character.gender %></p>
 
 <a href="/characters">Go Back</a>
+<a href="/characters/<%= character._id %>/edit">Edit</a>
 <form action="/characters/<%= character._id %>?_method=DELETE" method="POST">
     <button>Delete</button>
 </form>
