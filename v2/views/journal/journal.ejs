@@ -1,8 +1,10 @@
 <h1>Journal Page</h1>
 
+<a href="/journal/new">New Journal Entry</a>
+
 <% journals.forEach(function(journal){ %>
     <div>
-        <h3><%= journal.title %></h3>
+        <a href="/journal/<%= journal._id %>"><h3><%= journal.title %></h3></a>
         <p><%= journal.content %></p>
     </div>
 <% }); %>

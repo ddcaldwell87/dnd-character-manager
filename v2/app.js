@@ -82,7 +82,7 @@ app.get("/characters", function(req, res){
         if(err){
             console.log(err);
         } else {
-            res.render("character", {characters: characters});
+            res.render("character/character", {characters: characters});
         }
     });
 });
@@ -100,7 +100,7 @@ app.post("/characters", function(req, res){
 
 // NEW - render form to create new character
 app.get("/characters/new", function(req, res){
-    res.render("new");
+    res.render("character/new");
 });
 
 // SHOW - shows a specific character page
@@ -109,7 +109,7 @@ app.get("/characters/:id", function(req, res){
         if(err){
             console.log(err);
         } else {
-            res.render("show", {character: foundCharacter});
+            res.render("character/show", {character: foundCharacter});
         }
     });
 });
@@ -120,7 +120,7 @@ app.get("/characters/:id/edit", function(req, res){
         if(err){
             console.log(err);
         } else {
-            res.render("edit", {character: foundCharacter});
+            res.render("character/edit", {character: foundCharacter});
         }
     });
 });
@@ -177,40 +177,77 @@ app.post("/:user/:character/inventory", function(req, res){
 // JOURNAL ROUTES
 // ==============
 
-// Index route for journal entries for specific character
-app.get("/:user/:character/journal", function(req, res){
+// INDEX - shows all journals
+app.get("/journal", function(req, res){
     // Shows specific characters journals
     Journal.find({}, function(err, journals){
         if(err){
             console.log(err);
         } else {
-            res.render("journal", {journals: journals});
+            res.render("journal/journal", {journals: journals});
         }
     });
 });
 
-// New route for a journal entry for specific character
-app.get("/:user/:character/journal/new", function(req, res){
-    res.render("newJournal");
+// NEW - form page to create new journal entry
+app.get("/journal/new", function(req, res){
+    res.render("journal/new");
 });
 
-// Show route for a specific journal entry for specific character
-app.get("/:user/:character/journal/:id", function(req, res){
-    res.send("Journal page");
+// SHOW - shows a specific journal
+app.get("/journal/:id", function(req, res){
+    Journal.findById(req.params.id, function(err, foundJournal){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("journal/show", {journal: foundJournal});
+        }
+    });
     // res.render("journal", {journal: journal});
     // Shows specific characters journal
 });
 
-// Create route for a journal entry for specific character
-app.post("/:user/:character/journal", function(req, res){
+// CREATE - create logic for new journal
+app.post("/journal", function(req, res){
     // TODO: add associations
     Journal.create(req.body.journal, function(err, journal){
         if(err){
             console.log(err);
         } else {
-            character.journals.push(journal);
-            journal.save();
-            res.redirect("/:user/:character/journal/:id");
+            res.redirect("/journal");
+        }
+    });
+});
+
+// EDIT - form to edit a specific journal
+app.get("/journal/:id/edit", function(req, res){
+    Journal.findById(req.params.id, function(err, foundJournal){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("journal/edit", {journal: foundJournal});
+        }
+    });
+});
+
+// UPDATE - update logic to edit a specific journal
+app.put("/journal/:id", function(req, res){
+    Journal.findByIdAndUpdate(req.params.id, req.body.journal, function(err, updatedJournal){
+        if(err){
+            console.log(err);
+        } else {
+            res.redirect("/journal/" + req.params.id);
+        }
+    });
+});
+
+// DELETE - deletes a specific journal entry
+app.delete("/journal/:id", function(req, res){
+    Journal.findByIdAndRemove(req.params.id, function(err){
+        if(err){
+            console.log(err);
+        } else {
+            res.redirect("/journal");
         }
     });
 });
