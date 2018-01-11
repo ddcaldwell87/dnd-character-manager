@@ -87,17 +87,6 @@ app.get("/characters", function(req, res){
     });
 });
 
-// SHOW - shows a specific character page
-app.get("/characters/:id", function(req, res){
-    Character.findById(req.params.id, function(err, foundCharacter){
-        if(err){
-            console.log(err);
-        } else {
-            res.render("character/show", {character: foundCharacter});
-        }
-    });
-});
-
 // NEW - render form to create new character
 app.get("/characters/new", function(req, res){
     res.render("character/new");
@@ -110,6 +99,17 @@ app.post("/characters", function(req, res){
             console.log(err);
         } else {
             res.redirect("/characters");
+        }
+    });
+});
+
+// SHOW - shows a specific character page
+app.get("/characters/:id", function(req, res){
+    Character.findById(req.params.id, function(err, foundCharacter){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("character/show", {character: foundCharacter});
         }
     });
 });
@@ -162,17 +162,6 @@ app.get("/inventory", function(req, res){
     });
 });
 
-// SHOW - shows specific inventory item page
-app.get("/inventory/:id", function(req, res){
-    Inventory.findById(req.params.id, function(err, foundInventory){
-        if(err){
-            console.log(err);
-        } else {
-            res.render("inventory/show", {inventory: foundInventory});
-        }
-    });
-});
-
 // NEW - form for new inventory item
 app.get("/inventory/new", function(req, res){
     res.render("inventory/new");
@@ -185,6 +174,17 @@ app.post("/inventory", function(req, res){
             console.log(err);
         } else {
             res.redirect("/inventory");
+        }
+    });
+});
+
+// SHOW - shows specific inventory item page
+app.get("/inventory/:id", function(req, res){
+    Inventory.findById(req.params.id, function(err, foundInventory){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("inventory/show", {inventory: foundInventory});
         }
     });
 });
@@ -213,7 +213,7 @@ app.put("/inventory/:id", function(req, res){
 
 // DELETE - deletes a specific inventory item from db
 app.delete("/inventory/:id", function(req, res){
-    Inventory.findByIdAndDelete(req.params.id, function(err){
+    Inventory.findByIdAndRemove(req.params.id, function(err){
         if(err){
             console.log(err);
         } else {
@@ -238,19 +238,6 @@ app.get("/journal", function(req, res){
     });
 });
 
-// SHOW - shows a specific journal
-app.get("/journal/:id", function(req, res){
-    Journal.findById(req.params.id, function(err, foundJournal){
-        if(err){
-            console.log(err);
-        } else {
-            res.render("journal/show", {journal: foundJournal});
-        }
-    });
-    // res.render("journal", {journal: journal});
-    // Shows specific characters journal
-});
-
 // NEW - form page to create new journal entry
 app.get("/journal/new", function(req, res){
     res.render("journal/new");
@@ -266,6 +253,19 @@ app.post("/journal", function(req, res){
             res.redirect("/journal");
         }
     });
+});
+
+// SHOW - shows a specific journal
+app.get("/journal/:id", function(req, res){
+    Journal.findById(req.params.id, function(err, foundJournal){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("journal/show", {journal: foundJournal});
+        }
+    });
+    // res.render("journal", {journal: journal});
+    // Shows specific characters journal
 });
 
 // EDIT - form to edit a specific journal

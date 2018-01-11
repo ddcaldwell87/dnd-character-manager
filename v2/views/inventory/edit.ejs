@@ -1,0 +1,9 @@
+<h1>Edit <%= inventory.name %></h1>
+
+<form action="/inventory/<%= inventory._id %>?_method=PUT" method="POST">
+    <input type="text" name="inventory[name]" value="<%= inventory.name %>">
+    <input type="text" name="inventory[weight]" value="<%= inventory.weight %>">
+    <input type="text" name="inventory[quantity]" value="<%= inventory.quantity %>">
+    <input type="text" name="inventory[type]" value="<%= inventory.type %>">
+    <button>Save</button>
+</form>

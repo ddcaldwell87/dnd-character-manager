@@ -1,7 +1,9 @@
 <h1>Inventory Index Page</h1>
 
-<% inventory.forEach(function(item){ %>
+<a href="/inventory/new">New Inventory Item</a>
+
+<% inventory.forEach(function(inventory){ %>
     <div>
-        <h3><%= inventory.name %></h3>
+        <a href="/inventory/<%= inventory._id %>"><h3><%= inventory.name %></h3></a>
     </div>
 <% }); %>
