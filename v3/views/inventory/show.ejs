@@ -1,0 +1,11 @@
+<h1>Show Page for <%= inventory.name %></h1>
+
+<p><%= inventory.weight %> lbs.</p>
+<p><%= inventory.quantity %></p>
+<p><%= inventory.type %></p>
+
+<a href="/inventory">Go Back</a>
+<a href="/inventory/<%= inventory._id %>/edit">Edit</a>
+<form action="/inventory/<%= inventory._id %>?_method=DELETE" method="POST">
+    <button>Delete</button>    
+</form>

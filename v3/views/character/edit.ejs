@@ -1,0 +1,9 @@
+<h1>Edit form for <%= character.name %></h1>
+
+<form action="/characters/<%= character._id %>?_method=PUT" method="POST">
+    <input type="text" name="character[name]" value="<%= character.name %>">
+    <input type="text" name="character[race]" value="<%= character.race%>">
+    <input type="text" name="character[gender]" value="<%= character.gender %>">
+    <input type="text" name="character[profession]" value="<%= character.profession %>">
+    <button>Save</button>
+</form>
