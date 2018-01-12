@@ -1,8 +1,8 @@
 <h1>New Journal</h1>
 
-<a href="/characters/<%= character._id %>/journal">Go Back</a>
+<a href="/characters/journal">Go Back</a>
 
-<form action="/characters/<%= character._id %>/journal" method="POST">
+<form action="/characters/journal" method="POST">
     <input type="text" name="journal[title]" placeholder="Title">
     <textarea name="journal[content]" placeholder="Note"></textarea>
     <button>Save</button>

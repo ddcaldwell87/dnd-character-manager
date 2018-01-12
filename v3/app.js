@@ -237,7 +237,8 @@ app.get("/characters/:id/journal", function(req, res){
                 if(err){
                     console.log(err);
                 } else {
-                    res.render("journal/index", {journals: journals});
+                    res.render("journal/index", {journals: journals, character: foundCharacter});
+                    console.log(foundCharacter);
                 }
             });
         }
@@ -268,7 +269,7 @@ app.post("/characters/:id/journal", function(req, res){
                 } else {
                     foundCharacter.journals.push(journal);
                     foundCharacter.save();
-                    res.redirect("/characters/" + foundCharacter._id, {character: foundCharacter});
+                    res.redirect("/characters/" + foundCharacter._id);
                 }
             });
         }
@@ -278,14 +279,16 @@ app.post("/characters/:id/journal", function(req, res){
 // SHOW - shows a specific journal
 app.get("/characters/:id/journal/:id", function(req, res){
     Character.findById(req.params.id, function(err, foundCharacter){
+        console.log(foundCharacter);
         if(err){
             console.log(err);
         } else {
-            Journal.findById(req.params.id, function(err, foundJournal){
+            Journal.findById(req.params.id, function(err, journal){
                 if(err){
                     console.log(err);
                 } else {
-                    res.render("journal/show", {journal: foundJournal, character: foundCharacter});
+                    res.render("journal/show", {journal: journal, character: foundCharacter});
+                    console.log(foundCharacter);
                 }
             });
         }
