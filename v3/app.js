@@ -40,7 +40,7 @@ var characterSchema = new mongoose.Schema({
     gender: String,
     profession: String,
     inventory: [inventorySchema],
-    journal: [journalSchema]
+    journals: [journalSchema]
 });
 
 var Character = mongoose.model("Character", characterSchema);
@@ -226,21 +226,29 @@ app.delete("/inventory/:id", function(req, res){
 // JOURNAL ROUTES
 // ==============
 
-// INDEX - shows all journals
+// INDEX - shows all journals for a specific character
 app.get("/characters/:id/journal", function(req, res){
     // Shows specific characters journals
-    Character.findById(req.params.id, function(err, foundCharacter){
+    // Character.findById(req.params.id, function(err, foundCharacter){
+    //     if(err){
+    //         console.log(err);
+    //     } else {
+    //         Journal.find({}, function(err, journals){
+    //             if(err){
+    //                 console.log(err);
+    //             } else {
+    //                 res.render("journal/index", {journals: journals, character: foundCharacter});
+    //                 console.log(foundCharacter);
+    //             }
+    //         });
+    //     }
+    // });
+    Character.findById(req.params.id).populate("journals").exec(function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
-            Journal.find({}, function(err, journals){
-                if(err){
-                    console.log(err);
-                } else {
-                    res.render("journal/index", {journals: journals, character: foundCharacter});
-                    console.log(foundCharacter);
-                }
-            });
+            res.render("journal/index", {character: foundCharacter});
+            console.log(foundCharacter.journals);
         }
     });
 });
@@ -251,7 +259,7 @@ app.get("/characters/:id/journal/new", function(req, res){
         if(err){
             console.log(err);
         } else {
-            res.render("journal/new");
+            res.render("journal/new", {character: foundCharacter});
         }
     });
 });
@@ -267,7 +275,7 @@ app.post("/characters/:id/journal", function(req, res){
                 if(err){
                     console.log(err);
                 } else {
-                    foundCharacter.journals.push(journal);
+                    foundCharacter.journals.push(journal._id);
                     foundCharacter.save();
                     res.redirect("/characters/" + foundCharacter._id);
                 }

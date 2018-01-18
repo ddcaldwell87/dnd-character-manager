@@ -2,9 +2,9 @@
 
 <a href="/characters/<%= character._id %>/journal/new">New Journal Entry</a>
 
-<% journals.forEach(function(journal){ %>
+<% character.journals.forEach(function(journal){ %>
     <div>
-        <a href="/characters/<%= character._id %>/journal/<%= journal._id %>"><h3><%= journal.title %></h3></a>
+        <h3><a href="/characters/<%= character._id %>/journal/<%= journal._id %>"><%= journal.title %></a></h3>
         <p><%= journal.content %></p>
     </div>
 <% }); %>
