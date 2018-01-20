@@ -4,7 +4,6 @@
 
 <% character.journals.forEach(function(journal){ %>
     <div>
-        <h3><a href="/characters/<%= character._id %>/journal/<%= journal._id %>"><%= journal.title %></a></h3>
-        <p><%= journal.content %></p>
+        <p><%= journal.title %></p>
     </div>
 <% }); %>
