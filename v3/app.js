@@ -252,7 +252,6 @@ app.get("/characters/:id/journal/new", function(req, res){
 
 // CREATE - create logic for new journal
 app.post("/characters/:id/journal", function(req, res){
-    // TODO: add associations
     Character.findById(req.params.id, function(err, foundCharacter){
         if(err){
             console.log(err);
