@@ -4,8 +4,8 @@
 <p><%= inventory.quantity %></p>
 <p><%= inventory.type %></p>
 
-<a href="/inventory">Go Back</a>
-<a href="/inventory/<%= inventory._id %>/edit">Edit</a>
-<form action="/inventory/<%= inventory._id %>?_method=DELETE" method="POST">
+<a href="/characters/inventory">Go Back</a>
+<a href="/characters/inventory/<%= inventory._id %>/edit">Edit</a>
+<form action="/characters/inventory/<%= inventory._id %>?_method=DELETE" method="POST">
     <button>Delete</button>    
 </form>

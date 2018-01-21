@@ -1,9 +1,10 @@
 <h1>Inventory Index Page</h1>
 
-<a href="/inventory/new">New Inventory Item</a>
+<p><a href="/characters/<%= character._id %>/inventory/new">New Inventory Item</a></p>
+<p><a href="/characters/<%= character._id %>">Go Back</a></p>
 
-<% inventory.forEach(function(inventory){ %>
+<% character.inventory.forEach(function(inventory){ %>
     <div>
-        <a href="/inventory/<%= inventory._id %>"><h3><%= inventory.name %></h3></a>
+        <a href="/characters/<%= character._id %>/inventory/<%= inventory._id %>"><h3><%= inventory.name %></h3></a>
     </div>
 <% }); %>

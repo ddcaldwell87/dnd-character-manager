@@ -45,20 +45,6 @@ var characterSchema = new mongoose.Schema({
 
 var Character = mongoose.model("Character", characterSchema);
 
-var newCharacter = new Character({
-    name: "Calcus",
-    race: "Human",
-    gender: "Male",
-    profession: "Wizard"
-});
-// newCharacter.save();
-
-var newJournal = new Journal({
-    title: "This Is Another Title",
-    content: "blah blah blah blah blah"
-});
-// newJournal.save();
-
 // RESTFUL ROUTES
 app.get("/", function(req, res){
     res.send("Root route. Sign in or register page");
@@ -152,45 +138,66 @@ app.delete("/characters/:id", function(req, res){
 // ================
 
 // INDEX - show all inventory items
-app.get("/inventory", function(req, res){
-    Inventory.find({}, function(err, foundInventory){
+app.get("/characters/:id/inventory", function(req, res){
+    Character.findById(req.params.id).populate("inventory").exec(function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
-            res.render("inventory/index", {inventory: foundInventory});
+            console.log(foundCharacter);
+            res.render("inventory/index", {character: foundCharacter});
         }
     });
 });
 
 // NEW - form for new inventory item
-app.get("/inventory/new", function(req, res){
-    res.render("inventory/new");
-});
-
-// CREATE - create logic to save new inventory item to db
-app.post("/inventory", function(req, res){
-    Inventory.create(req.body.inventory, function(err, newInventory){
+app.get("/characters/:id/inventory/new", function(req, res){
+    Character.findById(req.params.id, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
-            res.redirect("/inventory");
+            res.render("inventory/new", {character: foundCharacter});
+        }
+    });
+});
+
+// CREATE - create logic to save new inventory item to db
+app.post("/characters/:id/inventory", function(req, res){
+    Character.findById(req.params.id, function(err, foundCharacter){
+        if(err){
+            console.log(err);
+        } else {
+            Inventory.create(req.body.inventory, function(err, inventory){
+                if(err){
+                    console.log(err);
+                } else {
+                    foundCharacter.inventory.push(inventory);
+                    foundCharacter.save();
+                    res.redirect("/characters/" + foundCharacter._id + "/inventory/");
+                }
+            });
         }
     });
 });
 
 // SHOW - shows specific inventory item page
-app.get("/inventory/:id", function(req, res){
-    Inventory.findById(req.params.id, function(err, foundInventory){
+app.get("/characters/:id/inventory/:id", function(req, res){
+    Character.findById(req.params.id, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
-            res.render("inventory/show", {inventory: foundInventory});
+            Inventory.findById(req.params.id, function(err, inventory){
+                if(err){
+                    console.log(err);
+                } else {
+                    res.render("inventory/show", {inventory: inventory, character: foundCharacter});
+                }
+            });
         }
     });
 });
 
 // EDIT - edit form for specific inventory item
-app.get("/inventory/:id/edit", function(req, res){
+app.get("/characters/:id/inventory/:id/edit", function(req, res){
     Inventory.findById(req.params.id, function(err, foundInventory){
         if(err){
             console.log(err);
@@ -213,11 +220,17 @@ app.put("/inventory/:id", function(req, res){
 
 // DELETE - deletes a specific inventory item from db
 app.delete("/inventory/:id", function(req, res){
-    Inventory.findByIdAndRemove(req.params.id, function(err){
+    Character.findById(req.params.id, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
-            res.redirect("/inventory");
+            Inventory.findByIdAndRemove(req.params.id, function(err){
+                if(err){
+                    console.log(err);
+                } else {
+                    res.redirect("/characters/:id/inventory", {character: foundCharacter});
+                }
+            });
         }
     });
 });
@@ -262,7 +275,7 @@ app.post("/characters/:id/journal", function(req, res){
                 } else {
                     foundCharacter.journals.push(journal);
                     foundCharacter.save();
-                    res.redirect("/characters/" + foundCharacter._id);
+                    res.redirect("/characters/" + foundCharacter._id + "/journal/");
                 }
             });
         }

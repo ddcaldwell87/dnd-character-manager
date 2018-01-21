@@ -1,6 +1,7 @@
 <h1>Journal Page</h1>
 
-<a href="/characters/<%= character._id %>/journal/new">New Journal Entry</a>
+<p><a href="/characters/<%= character._id %>/journal/new">New Journal Entry</a></p>
+<p><a href="/characters/<%= character._id %>">Go Back</a></p>
 
 <% character.journals.forEach(function(journal){ %>
     <div>
