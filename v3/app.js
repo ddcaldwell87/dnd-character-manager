@@ -261,7 +261,7 @@ app.post("/characters/:id/journal", function(req, res){
                 if(err){
                     console.log(err);
                 } else {
-                    foundCharacter.journals.push(journal._id);
+                    foundCharacter.journals.push(journal);
                     foundCharacter.save();
                     res.redirect("/characters/" + foundCharacter._id);
                 }
