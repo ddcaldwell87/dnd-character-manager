@@ -40,3 +40,10 @@ Web app that keeps track of a D&D character with character sheet, inventory, spe
 2. As a user, I want to see basic information on my character (name, race, gender, class, etc..).
 3. As a user, I want to see my characters inventory.
 4. As a user, I want to be able to keep notes in a journal.
+- - - -
+### Version 2 User Stories
+1. As a user, I want to see my characters inventory.
+2. As a user, I want to be able to keep notes in a journal.
+- - - -
+### Version 3 User Stories
+1. As a user, my characters have associations between character schema and other schemas.
