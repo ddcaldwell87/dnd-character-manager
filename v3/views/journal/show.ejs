@@ -1,9 +1,9 @@
-<h1>Show Page for <%= journal.title %></h1>
+<h1><%= journal.title %></h1>
 
 <p><%= journal.content %></p>
 
-<a href="/characters/<%= character %>/journal">Go Back</a>
-<a href="/characters/<%= character %>/journal/<%= journal._id %>/edit">Edit</a>
-<form action="/characters/<%= character %>/journal/<%= journal._id %>?_method=DELETE" method="POST">
+<a href="/characters/<%= character_id %>/journal">Go Back</a>
+<a href="/characters/<%= character_id %>/journal/<%= journal._id %>/edit">Edit</a>
+<form action="/characters/<%= character_id %>/journal/<%= journal._id %>?_method=DELETE" method="POST">
     <button>Delete</button>
 </form>

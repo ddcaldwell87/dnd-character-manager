@@ -1,6 +1,8 @@
 <h1>Edit <%= journal.title %></h1>
 
-<form action="/journal/<%= journal._id %>?_method=PUT" method="POST">
+<p><a href="/characters/<%= character_id %>/journal/<%= journal._id %>">Go Back</a></p>
+
+<form action="/characters/<%= character_id %>/journal/<%= journal._id %>?_method=PUT" method="POST">
     <input type="text" name="journal[title]" value="<%= journal.title %>">
     <textarea name="journal[content]"><%= journal.content %></textarea>
     <button>Save</button>

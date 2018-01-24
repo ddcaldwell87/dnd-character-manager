@@ -293,7 +293,7 @@ app.get("/characters/:charId/journal/:id", function(req, res){
                 if(err){
                     console.log(err);
                 } else {
-                    res.render("journal/show", {journal: journal, character: req.params.charId});
+                    res.render("journal/show", {journal: journal, character_id: req.params.charId});
                     console.log(foundCharacter);
                 }
             });
@@ -302,23 +302,23 @@ app.get("/characters/:charId/journal/:id", function(req, res){
 });
 
 // EDIT - form to edit a specific journal
-app.get("/journal/:id/edit", function(req, res){
+app.get("/characters/:charId/journal/:id/edit", function(req, res){
     Journal.findById(req.params.id, function(err, foundJournal){
         if(err){
             console.log(err);
         } else {
-            res.render("journal/edit", {journal: foundJournal});
+            res.render("journal/edit", {journal: foundJournal, character_id: req.params.charId});
         }
     });
 });
 
 // UPDATE - update logic to edit a specific journal
-app.put("/journal/:id", function(req, res){
+app.put("/characters/:charId/journal/:id", function(req, res){
     Journal.findByIdAndUpdate(req.params.id, req.body.journal, function(err, updatedJournal){
         if(err){
             console.log(err);
         } else {
-            res.redirect("/journal/" + req.params.id);
+            res.redirect("/characters/" + req.params.charId + "/journal/" + req.params.id);
         }
     });
 });
