@@ -336,16 +336,6 @@ app.delete("/characters/:charId/journal/:id", function(req, res){
     });
 });
 
-// app.delete("/characters/:id", function(req, res){
-//     Character.findByIdAndRemove(req.params.id, function(err){
-//         if(err){
-//             console.log(err);
-//         } else {
-//             res.redirect("/characters");
-//         }
-//     });
-// });
-
 // ============
 // START SERVER
 // ============
