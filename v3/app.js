@@ -283,7 +283,7 @@ app.post("/characters/:id/journal", function(req, res){
 });
 
 // SHOW - shows a specific journal
-app.get("/characters/:id/journal/:id", function(req, res){
+app.get("/characters/:charId/journal/:id", function(req, res){
     Character.findById(req.params.id, function(err, foundCharacter){
         console.log(foundCharacter);
         if(err){
@@ -293,7 +293,7 @@ app.get("/characters/:id/journal/:id", function(req, res){
                 if(err){
                     console.log(err);
                 } else {
-                    res.render("journal/show", {journal: journal, character: foundCharacter});
+                    res.render("journal/show", {journal: journal, character: req.params.charId});
                     console.log(foundCharacter);
                 }
             });
@@ -343,6 +343,6 @@ app.delete("/characters/:id/journal/:id", function(req, res){
 // ============
 // START SERVER
 // ============
-app.listen(process.env.PORT, process.env.IP, function(){
+app.listen(3000, function(){
     console.log("Server is now running!");
 });
