@@ -325,11 +325,16 @@ app.put("/characters/:charId/journal/:id", function(req, res){
 
 // DELETE - deletes a specific journal entry
 app.delete("/characters/:charId/journal/:id", function(req, res){
-    Journal.findByIdAndRemove(req.params.id, function(err){
+    Character.findById(req.params.charId, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
-            res.redirect("/characters/" + req.params.charId + "/journal");
+            Journal.findById(req.params.id, function(err, journal){
+                console.log(journal);
+                journal.remove();
+                console.log(journal);
+                res.redirect("/characters/" + req.params.charId + "/journal");
+            });
         }
     });
 });
