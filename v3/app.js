@@ -240,9 +240,9 @@ app.delete("/inventory/:id", function(req, res){
 // ==============
 
 // INDEX - shows all journals for a specific character
-app.get("/characters/:id/journal", function(req, res){
+app.get("/characters/:charId/journal", function(req, res){
     // Shows specific characters journals
-    Character.findById(req.params.id).populate("journal").exec(function(err, foundCharacter){
+    Character.findById(req.params.charId, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
@@ -253,8 +253,8 @@ app.get("/characters/:id/journal", function(req, res){
 });
 
 // NEW - form page to create new journal entry
-app.get("/characters/:id/journal/new", function(req, res){
-    Character.findById(req.params.id, function(err, foundCharacter){
+app.get("/characters/:charId/journal/new", function(req, res){
+    Character.findById(req.params.charId, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
@@ -264,8 +264,8 @@ app.get("/characters/:id/journal/new", function(req, res){
 });
 
 // CREATE - create logic for new journal
-app.post("/characters/:id/journal", function(req, res){
-    Character.findById(req.params.id, function(err, foundCharacter){
+app.post("/characters/:charId/journal", function(req, res){
+    Character.findById(req.params.charId, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
@@ -275,7 +275,7 @@ app.post("/characters/:id/journal", function(req, res){
                 } else {
                     foundCharacter.journals.push(journal);
                     foundCharacter.save();
-                    res.redirect("/characters/" + foundCharacter._id + "/journal/");
+                    res.redirect("/characters/" + req.params.charId + "/journal/");
                 }
             });
         }
@@ -324,21 +324,25 @@ app.put("/characters/:charId/journal/:id", function(req, res){
 });
 
 // DELETE - deletes a specific journal entry
-app.delete("/characters/:id/journal/:id", function(req, res){
-    Character.findById(req.params.id, function(err, foundCharacter){
+app.delete("/characters/:charId/journal/:id", function(req, res){
+    Journal.findByIdAndRemove(req.params.id, function(err){
         if(err){
             console.log(err);
         } else {
-            Journal.findByIdAndRemove(req.params.id, function(err){
-                if(err){
-                    console.log(err);
-                } else {
-                    res.redirect("/characters/:id/journal", {character: foundCharacter});
-                }
-            });
+            res.redirect("/characters/" + req.params.charId + "/journal");
         }
     });
 });
+
+// app.delete("/characters/:id", function(req, res){
+//     Character.findByIdAndRemove(req.params.id, function(err){
+//         if(err){
+//             console.log(err);
+//         } else {
+//             res.redirect("/characters");
+//         }
+//     });
+// });
 
 // ============
 // START SERVER
