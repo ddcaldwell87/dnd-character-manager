@@ -90,8 +90,8 @@ app.post("/characters", function(req, res){
 });
 
 // SHOW - shows a specific character page
-app.get("/characters/:id", function(req, res){
-    Character.findById(req.params.id, function(err, foundCharacter){
+app.get("/characters/:charId", function(req, res){
+    Character.findById(req.params.charId, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
@@ -101,8 +101,8 @@ app.get("/characters/:id", function(req, res){
 });
 
 // EDIT - render form to edit specific character
-app.get("/characters/:id/edit", function(req, res){
-    Character.findById(req.params.id, function(err, foundCharacter){
+app.get("/characters/:charId/edit", function(req, res){
+    Character.findById(req.params.charId, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
@@ -112,19 +112,19 @@ app.get("/characters/:id/edit", function(req, res){
 });
 
 // UPDATE - update logic for edit form
-app.put("/characters/:id", function(req, res){
-    Character.findByIdAndUpdate(req.params.id, req.body.character, function(err, updatedCharacter){
+app.put("/characters/:charId", function(req, res){
+    Character.findByIdAndUpdate(req.params.charId, req.body.character, function(err, updatedCharacter){
         if(err){
             console.log(err);
         } else {
-            res.redirect("/characters/" + req.params.id);
+            res.redirect("/characters/" + req.params.charId);
         }
     });
 });
 
 // DELETE - delete a character
-app.delete("/characters/:id", function(req, res){
-    Character.findByIdAndRemove(req.params.id, function(err){
+app.delete("/characters/:charId", function(req, res){
+    Character.findByIdAndRemove(req.params.charId, function(err){
         if(err){
             console.log(err);
         } else {
@@ -138,8 +138,8 @@ app.delete("/characters/:id", function(req, res){
 // ================
 
 // INDEX - show all inventory items
-app.get("/characters/:id/inventory", function(req, res){
-    Character.findById(req.params.id).populate("inventory").exec(function(err, foundCharacter){
+app.get("/characters/:charId/inventory", function(req, res){
+    Character.findById(req.params.charId, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
@@ -150,8 +150,8 @@ app.get("/characters/:id/inventory", function(req, res){
 });
 
 // NEW - form for new inventory item
-app.get("/characters/:id/inventory/new", function(req, res){
-    Character.findById(req.params.id, function(err, foundCharacter){
+app.get("/characters/:charId/inventory/new", function(req, res){
+    Character.findById(req.params.charId, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
@@ -161,8 +161,8 @@ app.get("/characters/:id/inventory/new", function(req, res){
 });
 
 // CREATE - create logic to save new inventory item to db
-app.post("/characters/:id/inventory", function(req, res){
-    Character.findById(req.params.id, function(err, foundCharacter){
+app.post("/characters/:charId/inventory", function(req, res){
+    Character.findById(req.params.charId, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
@@ -180,7 +180,7 @@ app.post("/characters/:id/inventory", function(req, res){
 });
 
 // SHOW - shows specific inventory item page
-app.get("/characters/:id/inventory/:id", function(req, res){
+app.get("/characters/:charId/inventory/:id", function(req, res){
     Character.findById(req.params.id, function(err, foundCharacter){
         if(err){
             console.log(err);
@@ -189,7 +189,7 @@ app.get("/characters/:id/inventory/:id", function(req, res){
                 if(err){
                     console.log(err);
                 } else {
-                    res.render("inventory/show", {inventory: inventory, character: foundCharacter});
+                    res.render("inventory/show", {inventory: inventory, character_id: req.params.charId});
                 }
             });
         }
@@ -197,39 +197,37 @@ app.get("/characters/:id/inventory/:id", function(req, res){
 });
 
 // EDIT - edit form for specific inventory item
-app.get("/characters/:id/inventory/:id/edit", function(req, res){
+app.get("/characters/:charId/inventory/:id/edit", function(req, res){
     Inventory.findById(req.params.id, function(err, foundInventory){
         if(err){
             console.log(err);
         } else {
-            res.render("inventory/edit", {inventory: foundInventory});
+            res.render("inventory/edit", {inventory: foundInventory, character_id: req.params.charId});
         }
     });
 });
 
 // UPDATE - update logic to edit specific inventory item
-app.put("/inventory/:id", function(req, res){
+app.put("/characters/:charId/inventory/:id", function(req, res){
     Inventory.findByIdAndUpdate(req.params.id, req.body.inventory, function(err, updatedInventory){
         if(err){
             console.log(err);
         } else {
-            res.redirect("/inventory/" + req.params.id);
+            res.redirect("/characters/" + req.params.charId + "/inventory/" + req.params.id);
         }
     });
 });
 
 // DELETE - deletes a specific inventory item from db
-app.delete("/inventory/:id", function(req, res){
-    Character.findById(req.params.id, function(err, foundCharacter){
+app.delete("/characters/:charId/inventory/:id", function(req, res){
+    Character.findById(req.params.charId, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
-            Inventory.findByIdAndRemove(req.params.id, function(err){
-                if(err){
-                    console.log(err);
-                } else {
-                    res.redirect("/characters/:id/inventory", {character: foundCharacter});
-                }
+            Inventory.findById(req.params.id, function(err, inventory){
+                foundCharacter.inventory.remove(inventory);
+                foundCharacter.save();
+                res.redirect("/characters/" + req.params.charId + "/inventory");
             });
         }
     });
