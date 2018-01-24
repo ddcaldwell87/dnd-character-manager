@@ -209,11 +209,17 @@ app.get("/characters/:charId/inventory/:id/edit", function(req, res){
 
 // UPDATE - update logic to edit specific inventory item
 app.put("/characters/:charId/inventory/:id", function(req, res){
-    Inventory.findByIdAndUpdate(req.params.id, req.body.inventory, function(err, updatedInventory){
+    Character.findById(req.params.charId, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
-            res.redirect("/characters/" + req.params.charId + "/inventory/" + req.params.id);
+            Inventory.findByIdAndUpdate(req.params.id, req.body.inventory, function(err, inventory){
+                if(err){
+                    console.log(err);
+                } else {
+                    res.redirect("/characters/" + req.params.charId + "/inventory/" + req.params.id);
+                }
+            });
         }
     });
 });
@@ -312,11 +318,17 @@ app.get("/characters/:charId/journal/:id/edit", function(req, res){
 
 // UPDATE - update logic to edit a specific journal
 app.put("/characters/:charId/journal/:id", function(req, res){
-    Journal.findByIdAndUpdate(req.params.id, req.body.journal, function(err, updatedJournal){
+    Character.findById(req.params.charId, function(err, foundCharacter){
         if(err){
             console.log(err);
         } else {
-            res.redirect("/characters/" + req.params.charId + "/journal/" + req.params.id);
+            Journal.findByIdAndUpdate(req.params.id, req.body.journal, function(err, updatedJournal){
+                if(err){
+                    console.log(err);
+                } else {
+                    res.redirect("/characters/" + req.params.charId + "/journal/" + req.params.id);
+                }
+            });
         }
     });
 });
