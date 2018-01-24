@@ -328,9 +328,8 @@ app.delete("/characters/:charId/journal/:id", function(req, res){
             console.log(err);
         } else {
             Journal.findById(req.params.id, function(err, journal){
-                console.log(journal);
-                journal.remove();
-                console.log(journal);
+                foundCharacter.journals.remove(journal);
+                foundCharacter.save();
                 res.redirect("/characters/" + req.params.charId + "/journal");
             });
         }
